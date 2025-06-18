@@ -8,12 +8,19 @@ namespace AviationWarehouseSystem.Controllers
 {
     public class ProductCategoryController : Controller
     {
-        private readonly WarehouseContext _context;
-        private readonly IProductCategoryService _categoryService;
-        public ProductCategoryController(WarehouseContext context, IProductCategoryService categoryService)
+        //private readonly WarehouseContext _context;
+        //private readonly IProductCategoryService _categoryService;
+
+        //public ProductCategoryController(WarehouseContext context, IProductCategoryService categoryService)
+        //{
+        //    _context = context;
+        //    _categoryService = categoryService;
+        //}
+        private readonly IUnitOfWork _unitOfWork;
+
+        public ProductCategoryController(IUnitOfWork unitOfWork)
         {
-            _context = context;
-            _categoryService = categoryService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IActionResult> Index(string searchString)
@@ -22,12 +29,14 @@ namespace AviationWarehouseSystem.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                categories = await _categoryService.SearchProductCategoryAsync(searchString);
+                //categories = await _categoryService.SearchProductCategoryAsync(searchString);
+                categories = await _unitOfWork.ProductCategory.SearchProductCategoryAsync(searchString);
                 ViewData["CurrentFilter"] = searchString;
             }
             else
             {
-                categories = await _categoryService.GetAllProductCategoryAsync();
+                //categories = await _categoryService.GetAllProductCategoryAsync();
+                categories = await _unitOfWork.ProductCategory.GetAllAsync();
             }
 
             return View(categories);
@@ -47,7 +56,8 @@ namespace AviationWarehouseSystem.Controllers
             if (ModelState.IsValid)
             {
                 productCategory.CreatedDate = DateTime.Now;
-                await _categoryService.CreateProductCategoryAsync(productCategory);
+                //await _categoryService.CreateProductCategoryAsync(productCategory);
+                await _unitOfWork.ProductCategory.CreateAsync(productCategory);
                 return RedirectToAction(nameof(Index));
             }
             return View(productCategory);
@@ -56,7 +66,8 @@ namespace AviationWarehouseSystem.Controllers
         // GET: ProductCategory/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var category = await _categoryService.GetProductCategoryByIdAsync(id);
+            //var category = await _categoryService.GetProductCategoryByIdAsync(id);
+            var category = await _unitOfWork.ProductCategory.GetByIdAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -76,7 +87,8 @@ namespace AviationWarehouseSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                await _categoryService.UpdateProductCategoryAsync(productCategory);
+                //await _categoryService.UpdateProductCategoryAsync(productCategory);
+                await _unitOfWork.ProductCategory.UpdateAsync(productCategory);
                 return RedirectToAction(nameof(Index));
             }
             return View(productCategory);
@@ -85,7 +97,8 @@ namespace AviationWarehouseSystem.Controllers
         // GET: ProductCategory/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var category = await _categoryService.GetProductCategoryByIdAsync(id);
+            //var category = await _categoryService.GetProductCategoryByIdAsync(id);
+            var category = await _unitOfWork.ProductCategory.GetByIdAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -98,7 +111,8 @@ namespace AviationWarehouseSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _categoryService.DeleteProductCategoryAsync(id);
+            //await _categoryService.DeleteProductCategoryAsync(id);
+            await _unitOfWork.ProductCategory.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

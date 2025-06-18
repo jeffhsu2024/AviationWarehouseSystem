@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.IService
 {
-    public interface IDutyFreeProductService
+    public interface IDutyFreeProductService : IService<DutyFreeProduct>
     {
         Task<IEnumerable<DutyFreeProduct>> GetAllProductsAsync();
         Task<DutyFreeProduct> GetProductByIdAsync(int id);

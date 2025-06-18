@@ -5,19 +5,20 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class DutyFreeProductService : IDutyFreeProductService
+    public class DutyFreeProductService : Service<DutyFreeProduct>, IDutyFreeProductService
     {
         private readonly WarehouseContext _context;
-        public DutyFreeProductService(WarehouseContext context)
+
+        public DutyFreeProductService(WarehouseContext context) : base(context)
         {
             _context = context;
         }
 
+        // 取得所有啟用商品，含分類與供應商
         public async Task<IEnumerable<DutyFreeProduct>> GetAllProductsAsync()
         {
             return await _context.DutyFreeProducts
@@ -27,6 +28,8 @@ namespace DataAccess
                 .OrderBy(p => p.ProductName)
                 .ToListAsync();
         }
+
+        // 取得指定商品（含分類與供應商）
         public async Task<DutyFreeProduct> GetProductByIdAsync(int id)
         {
             return await _context.DutyFreeProducts
@@ -35,13 +38,15 @@ namespace DataAccess
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        // 建立商品（可直接呼叫基底 CreateAsync，但如需額外處理可覆寫）
         public async Task<DutyFreeProduct> CreateProductAsync(DutyFreeProduct product)
         {
-            _context.DutyFreeProducts.Add(product);
+            await _context.DutyFreeProducts.AddAsync(product);
             await _context.SaveChangesAsync();
             return product;
         }
 
+        // 更新商品（可直接呼叫基底 UpdateAsync，但如需額外處理可覆寫）
         public async Task<DutyFreeProduct> UpdateProductAsync(DutyFreeProduct product)
         {
             _context.Entry(product).State = EntityState.Modified;
@@ -49,16 +54,18 @@ namespace DataAccess
             return product;
         }
 
+        // 軟刪除
         public async Task<bool> DeleteProductAsync(int id)
         {
             var product = await _context.DutyFreeProducts.FindAsync(id);
             if (product == null) return false;
 
-            product.IsActive = false; // 軟刪除
+            product.IsActive = false;
             await _context.SaveChangesAsync();
             return true;
         }
 
+        // 搜尋商品
         public async Task<IEnumerable<DutyFreeProduct>> SearchProductsAsync(string searchTerm)
         {
             return await _context.DutyFreeProducts
@@ -70,12 +77,13 @@ namespace DataAccess
                         p.Brand.Contains(searchTerm)))
                 .ToListAsync();
         }
+
+        // 庫存異動
         public async Task<bool> UpdateStockAsync(int productId, int quantity, TransactionType transactionType)
         {
             var product = await _context.DutyFreeProducts.FindAsync(productId);
             if (product == null) return false;
 
-            // 建立庫存異動記錄
             var transaction = new InventoryTransaction
             {
                 ProductId = productId,
@@ -85,7 +93,6 @@ namespace DataAccess
                 Remarks = $"{transactionType} - {quantity} units"
             };
 
-            // 更新庫存數量
             if (transactionType == TransactionType.Purchase)
                 product.StockQuantity += quantity;
             else if (transactionType == TransactionType.Sale)
@@ -95,7 +102,5 @@ namespace DataAccess
             await _context.SaveChangesAsync();
             return true;
         }
-
-
     }
 }

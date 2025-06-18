@@ -9,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IDutyFreeProductService, DutyFreeProductService>();
-builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
+//builder.Services.AddScoped<IDutyFreeProductService, DutyFreeProductService>();
+//builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddDbContext<WarehouseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

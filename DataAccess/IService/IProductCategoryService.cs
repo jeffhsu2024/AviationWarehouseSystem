@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.IService
 {
-    public interface IProductCategoryService
+    public interface IProductCategoryService : IService<ProductCategory>
     {
         Task<IEnumerable<ProductCategory>> GetAllProductCategoryAsync();
         Task<ProductCategory> GetProductCategoryByIdAsync(int id);
