@@ -1,0 +1,58 @@
+
+@model IEnumerable<Models.DutyFreeProduct>
+@{
+    ViewData["Title"] = "免稅商品清單";
+    var currentFilter = ViewData["CurrentFilter"] as string;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="searchString" value="@currentFilter" class="form-control" placeholder="搜尋商品名稱或編號..." />
+        <button type="submit" class="btn btn-primary">搜尋</button>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>商品編號</th>
+            <th>商品名稱</th>
+            <th>品牌</th>
+            <th>單價</th>
+            <th>庫存數量</th>
+            <th>單位</th>
+            <th>是否啟用</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductCode</td>
+                <td>@item.ProductName</td>
+                <td>@item.Brand</td>
+                <td>@item.UnitPrice.ToString("N2")</td>
+                <td>@item.StockQuantity</td>
+                <td>@item.Unit</td>
+                <td>@(item.IsActive ? "是" : "否")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">詳細</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">編輯</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">刪除</a>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="8" class="text-center">查無資料</td>
+        </tr>
+    }
+    </tbody>
+</table>

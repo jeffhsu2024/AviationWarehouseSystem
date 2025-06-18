@@ -1,0 +1,137 @@
+﻿@model Models.DutyFreeProduct
+
+@{
+    ViewData["Title"] = "新增免稅商品";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="ProductName" class="control-label"></label>
+        <input asp-for="ProductName" class="form-control" />
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProductCode" class="control-label"></label>
+        <input asp-for="ProductCode" class="form-control" />
+        <span asp-validation-for="ProductCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SupplierId" class="control-label"></label>
+        <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+        <span asp-validation-for="SupplierId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StockQuantity" class="control-label"></label>
+        <input asp-for="StockQuantity" class="form-control" />
+        <span asp-validation-for="StockQuantity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SafetyStock" class="control-label"></label>
+        <input asp-for="SafetyStock" class="form-control" />
+        <span asp-validation-for="SafetyStock" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MaxStock" class="control-label"></label>
+        <input asp-for="MaxStock" class="form-control" />
+        <span asp-validation-for="MaxStock" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UnitPrice" class="control-label"></label>
+        <input asp-for="UnitPrice" class="form-control" />
+        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CostPrice" class="control-label"></label>
+        <input asp-for="CostPrice" class="form-control" />
+        <span asp-validation-for="CostPrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DutyFreeType" class="control-label"></label>
+        <select asp-for="DutyFreeType" class="form-control" asp-items="Html.GetEnumSelectList<Models.DutyFreeType>()"></select>
+        <span asp-validation-for="DutyFreeType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DutyFreeDiscountRate" class="control-label"></label>
+        <input asp-for="DutyFreeDiscountRate" class="form-control" />
+        <span asp-validation-for="DutyFreeDiscountRate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Unit" class="control-label"></label>
+        <input asp-for="Unit" class="form-control" />
+        <span asp-validation-for="Unit" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Brand" class="control-label"></label>
+        <input asp-for="Brand" class="form-control" />
+        <span asp-validation-for="Brand" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Barcode" class="control-label"></label>
+        <input asp-for="Barcode" class="form-control" />
+        <span asp-validation-for="Barcode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Remarks" class="control-label"></label>
+        <input asp-for="Remarks" class="form-control" />
+        <span asp-validation-for="Remarks" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreatedBy" class="control-label"></label>
+        <input asp-for="CreatedBy" class="form-control" />
+        <span asp-validation-for="CreatedBy" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UpdatedBy" class="control-label"></label>
+        <input asp-for="UpdatedBy" class="form-control" />
+        <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">新增</button>
+    <a asp-action="Index" class="btn btn-secondary">返回列表</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
