@@ -1,0 +1,158 @@
+@model IEnumerable<Models.TaxableGoods>
+
+@{
+    ViewData["Title"] = "報稅貨物管理";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-boxes"></i> 報稅貨物管理
+                    </h3>
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> 新增報稅貨物
+                    </a>
+                </div>
+                <div class="card-body">
+                    <!-- 搜尋區域 -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <form asp-action="Index" method="get">
+                                <div class="input-group">
+                                    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" 
+                                           class="form-control" placeholder="搜尋貨物名稱、編號、英文名稱或稅則號列...">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit">
+                                            <i class="fas fa-search"></i> 搜尋
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"] as string))
+                            {
+                                <a asp-action="Index" class="btn btn-outline-info">
+                                    <i class="fas fa-times"></i> 清除搜尋
+                                </a>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- 成功訊息 -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                    }
+
+                    <!-- 資料表格 -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>貨物編號</th>
+                                    <th>貨物名稱</th>
+                                    <th>英文名稱</th>
+                                    <th>稅則號列</th>
+                                    <th>完稅價格</th>
+                                    <th>稅率</th>
+                                    <th>應納稅額</th>
+                                    <th>數量</th>
+                                    <th>報關狀態</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.GoodsCode)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.GoodsName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.EnglishName)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.TariffCode)</td>
+                                            <td class="text-right">@Html.DisplayFor(modelItem => item.DutiableValue)</td>
+                                            <td class="text-right">@Html.DisplayFor(modelItem => item.TaxRate)%</td>
+                                            <td class="text-right">@Html.DisplayFor(modelItem => item.TaxAmount)</td>
+                                            <td class="text-right">@Html.DisplayFor(modelItem => item.Quantity) @Html.DisplayFor(modelItem => item.Unit)</td>
+                                            <td>
+                                                @switch (item.CustomsStatus)
+                                                {
+                                                    case Models.CustomsStatus.Pending:
+                                                        <span class="badge badge-pill customs-status-pending">待報關</span>
+                                                        break;
+                                                    case Models.CustomsStatus.Declared:
+                                                        <span class="badge badge-pill customs-status-declared">已報關</span>
+                                                        break;
+                                                    case Models.CustomsStatus.InProcess:
+                                                        <span class="badge badge-pill customs-status-inprocess">通關中</span>
+                                                        break;
+                                                    case Models.CustomsStatus.Cleared:
+                                                        <span class="badge badge-pill customs-status-cleared">已通關</span>
+                                                        break;
+                                                    case Models.CustomsStatus.Rejected:
+                                                        <span class="badge badge-pill customs-status-rejected">被拒絕</span>
+                                                        break;
+                                                    case Models.CustomsStatus.Detained:
+                                                        <span class="badge badge-pill customs-status-detained">暫扣</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info" title="詳細資料">
+                                                        <i class="fas fa-eye"></i> 詳細
+                                                    </a>
+                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" title="編輯">
+                                                        <i class="fas fa-edit"></i> 編輯
+                                                    </a>
+                                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" title="刪除">
+                                                        <i class="fas fa-trash"></i> 刪除
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="10" class="text-center text-muted">
+                                            <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                                            @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"] as string))
+                                            {
+                                                <span>找不到符合搜尋條件的報稅貨物</span>
+                                            }
+                                            else
+                                            {
+                                                <span>尚未建立任何報稅貨物</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // 自動隱藏成功訊息
+        setTimeout(function() {
+            $('.alert-success').fadeOut('slow');
+        }, 3000);
+    </script>
+}

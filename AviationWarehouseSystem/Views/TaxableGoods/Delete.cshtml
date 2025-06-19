@@ -1,0 +1,145 @@
+@model Models.TaxableGoods
+
+@{
+    ViewData["Title"] = "刪除報稅貨物";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-trash"></i> 刪除報稅貨物
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>警告！</strong> 您確定要刪除此報稅貨物嗎？此操作無法復原。
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3"><i class="fas fa-info-circle"></i> 基本資訊</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.GoodsCode)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.GoodsCode)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.GoodsName)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.GoodsName)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.EnglishName)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.EnglishName)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TariffCode)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.TariffCode)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Description)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="text-success mb-3"><i class="fas fa-dollar-sign"></i> 價格與稅務資訊</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DutiableValue)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.DutiableValue)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TaxRate)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.TaxRate)%</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TaxAmount)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.TaxAmount)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TaxCategory)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.TaxCategory.CategoryName)</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-info mb-3"><i class="fas fa-cubes"></i> 數量與規格</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Quantity)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Quantity) @Html.DisplayFor(model => model.Unit)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Weight)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Weight) KG</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.OriginCountry)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.OriginCountry)</dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="text-warning mb-3"><i class="fas fa-warehouse"></i> 供應商與儲位</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Supplier)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Supplier.SupplierName)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.StorageLocation)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.StorageLocation.LocationName)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CustomsStatus)</dt>
+                                <dd class="col-sm-8">
+                                    @switch (Model.CustomsStatus)
+                                    {
+                                        case Models.CustomsStatus.Pending:
+                                            <span class="badge badge-pill customs-status-pending">待報關</span>
+                                            break;
+                                        case Models.CustomsStatus.Declared:
+                                            <span class="badge badge-pill customs-status-declared">已報關</span>
+                                            break;
+                                        case Models.CustomsStatus.InProcess:
+                                            <span class="badge badge-pill customs-status-inprocess">通關中</span>
+                                            break;
+                                        case Models.CustomsStatus.Cleared:
+                                            <span class="badge badge-pill customs-status-cleared">已通關</span>
+                                            break;
+                                        case Models.CustomsStatus.Rejected:
+                                            <span class="badge badge-pill customs-status-rejected">被拒絕</span>
+                                            break;
+                                        case Models.CustomsStatus.Detained:
+                                            <span class="badge badge-pill customs-status-detained">暫扣</span>
+                                            break;
+                                    }
+                                </dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CreatedDate)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.CreatedDate)</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Remarks))
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="text-secondary mb-3"><i class="fas fa-comment"></i> 備註</h5>
+                                <p class="border p-3 bg-light">@Html.DisplayFor(model => model.Remarks)</p>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="text-center mt-4">
+                        <form asp-action="Delete" method="post" class="d-inline">
+                            <input type="hidden" asp-for="Id" />
+                            <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('確定要刪除此報稅貨物嗎？')">
+                                <i class="fas fa-trash"></i> 確認刪除
+                            </button>
+                        </form>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg ml-2">
+                            <i class="fas fa-arrow-left"></i> 取消
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

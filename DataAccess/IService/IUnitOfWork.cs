@@ -10,8 +10,10 @@ namespace DataAccess.IService
     {
         IDutyFreeProductService DutyFreeProduct { get; }
         IProductCategoryService ProductCategory { get; }
-
         ISupplierService Supplier { get; }
+        ITaxableGoodsService TaxableGoods { get; }
+        ITaxCategoryService TaxCategory { get; }
+        IStorageLocationService StorageLocation { get; }
         void Save();
     }
 }

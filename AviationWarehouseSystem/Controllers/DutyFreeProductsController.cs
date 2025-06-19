@@ -45,16 +45,12 @@ namespace AviationWarehouseSystem.Controllers
         //GET: DutyFreeProducts/Create
         public async Task<IActionResult> Create()
         {
-            //ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "CategoryName");
-            //ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "SupplierName");
-
-            // 取得商品分類與供應商清單
+            // 準備下拉選單資料
             var categories = await _unitOfWork.ProductCategory.GetAllProductCategoryAsync();
-            var suppliers = await _unitOfWork.Supplier.GetAllAsync(); // 這裡應改為供應商服務，假設有 IUnitOfWork.Supplier
+            var suppliers = await _unitOfWork.Supplier.GetAllAsync();
 
             ViewData["CategoryId"] = new SelectList(categories, "Id", "CategoryName");
             ViewData["SupplierId"] = new SelectList(suppliers, "Id", "SupplierName");
-
 
             return View();
         }
@@ -65,22 +61,17 @@ namespace AviationWarehouseSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                //await _productService.CreateProductAsync(product);
                 await _unitOfWork.DutyFreeProduct.CreateAsync(product);
                 TempData["SuccessMessage"] = "商品建立成功！";
                 return RedirectToAction(nameof(Index));
             }
 
-            //ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "CategoryName", product.CategoryId);
-            //ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "SupplierName", product.SupplierId);
-
-            // 取得商品分類與供應商清單 
-            //Todo : suppliers
+            // 驗證失敗時重新準備下拉選單資料
             var categories = await _unitOfWork.ProductCategory.GetAllProductCategoryAsync();
-            var suppliers = await _unitOfWork.Supplier.GetAllAsync(); // 這裡應改為供應商服務，假設有 IUnitOfWork.Supplier
+            var suppliers = await _unitOfWork.Supplier.GetAllAsync();
 
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "CategoryName");
-            ViewData["SupplierId"] = new SelectList(suppliers, "Id", "SupplierName");
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "CategoryName", product.CategoryId);
+            ViewData["SupplierId"] = new SelectList(suppliers, "Id", "SupplierName", product.SupplierId);
 
             return View(product);
         }
@@ -88,20 +79,16 @@ namespace AviationWarehouseSystem.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            //var product = await _productService.GetProductByIdAsync(id);
             var product = await _unitOfWork.DutyFreeProduct.GetByIdAsync(id);
             if (product == null) return NotFound();
 
-            //ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "CategoryName", product.CategoryId);
-            //ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "SupplierName", product.SupplierId);
-
-            // 取得商品分類與供應商清單 
-            //Todo : suppliers
+            // 準備下拉選單資料並設定選中值
             var categories = await _unitOfWork.ProductCategory.GetAllProductCategoryAsync();
-            var suppliers = await _unitOfWork.Supplier.GetAllAsync(); // 這裡應改為供應商服務，假設有 IUnitOfWork.Supplier
+            var suppliers = await _unitOfWork.Supplier.GetAllAsync();
 
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "CategoryName");
-            ViewData["SupplierId"] = new SelectList(suppliers, "Id", "SupplierName");
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "CategoryName", product.CategoryId);
+            ViewData["SupplierId"] = new SelectList(suppliers, "Id", "SupplierName", product.SupplierId);
+
             return View(product);
         }
 
@@ -114,28 +101,23 @@ namespace AviationWarehouseSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                //await _productService.UpdateProductAsync(product);
                 await _unitOfWork.DutyFreeProduct.UpdateAsync(product);
                 TempData["SuccessMessage"] = "商品更新成功！";
                 return RedirectToAction(nameof(Index));
             }
 
-            //ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "CategoryName", product.CategoryId);
-            //ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "SupplierName", product.SupplierId);
-
-            // 取得商品分類與供應商清單 
-            //Todo : suppliers
+            // 驗證失敗時重新準備下拉選單資料並保持選中值
             var categories = await _unitOfWork.ProductCategory.GetAllProductCategoryAsync();
-            var suppliers = await _unitOfWork.Supplier.GetAllAsync(); // 這裡應改為供應商服務，假設有 IUnitOfWork.Supplier
+            var suppliers = await _unitOfWork.Supplier.GetAllAsync();
 
-            ViewData["CategoryId"] = new SelectList(categories, "Id", "CategoryName");
-            ViewData["SupplierId"] = new SelectList(suppliers, "Id", "SupplierName");
+            ViewData["CategoryId"] = new SelectList(categories, "Id", "CategoryName", product.CategoryId);
+            ViewData["SupplierId"] = new SelectList(suppliers, "Id", "SupplierName", product.SupplierId);
 
             return View(product);
         }
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || id == 0)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -149,7 +131,7 @@ namespace AviationWarehouseSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(int id)
         {
-            if (id == null || id == 0)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -157,5 +139,7 @@ namespace AviationWarehouseSystem.Controllers
             await _unitOfWork.DutyFreeProduct.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+
     }
 }

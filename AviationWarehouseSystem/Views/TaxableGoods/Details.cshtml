@@ -1,0 +1,248 @@
+@model Models.TaxableGoods
+
+@{
+    ViewData["Title"] = "報稅貨物詳細資料";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-eye"></i> 報稅貨物詳細資料
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3"><i class="fas fa-info-circle"></i> 基本資訊</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.GoodsCode)</dt>
+                                <dd class="col-sm-8"><strong>@Html.DisplayFor(model => model.GoodsCode)</strong></dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.GoodsName)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.GoodsName)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.EnglishName)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.EnglishName)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TariffCode)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.TariffCode)</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Description)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="text-success mb-3"><i class="fas fa-dollar-sign"></i> 價格與稅務資訊</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DutiableValue)</dt>
+                                <dd class="col-sm-8"><strong class="text-success">@Html.DisplayFor(model => model.DutiableValue)</strong></dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TaxRate)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.TaxRate)%</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TaxAmount)</dt>
+                                <dd class="col-sm-8"><strong class="text-danger">@Html.DisplayFor(model => model.TaxAmount)</strong></dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TaxCategory)</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-secondary">@Html.DisplayFor(model => model.TaxCategory.CategoryName)</span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-info mb-3"><i class="fas fa-cubes"></i> 數量與規格</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Quantity)</dt>
+                                <dd class="col-sm-8"><strong>@Html.DisplayFor(model => model.Quantity) @Html.DisplayFor(model => model.Unit)</strong></dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Weight)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Weight) KG</dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.OriginCountry)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.OriginCountry)</dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="text-warning mb-3"><i class="fas fa-warehouse"></i> 供應商與儲位</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Supplier)</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.Supplier != null)
+                                    {
+                                        <span class="badge badge-info">@Html.DisplayFor(model => model.Supplier.SupplierName)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">未指定</span>
+                                    }
+                                </dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.StorageLocation)</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-primary">@Html.DisplayFor(model => model.StorageLocation.LocationName)</span>
+                                </dd>
+                                
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CustomsStatus)</dt>
+                                <dd class="col-sm-8">
+                                    @switch (Model.CustomsStatus)
+                                    {
+                                        case Models.CustomsStatus.Pending:
+                                            <span class="badge badge-pill customs-status-pending">待報關</span>
+                                            break;
+                                        case Models.CustomsStatus.Declared:
+                                            <span class="badge badge-pill customs-status-declared">已報關</span>
+                                            break;
+                                        case Models.CustomsStatus.InProcess:
+                                            <span class="badge badge-pill customs-status-inprocess">通關中</span>
+                                            break;
+                                        case Models.CustomsStatus.Cleared:
+                                            <span class="badge badge-pill customs-status-cleared">已通關</span>
+                                            break;
+                                        case Models.CustomsStatus.Rejected:
+                                            <span class="badge badge-pill customs-status-rejected">被拒絕</span>
+                                            break;
+                                        case Models.CustomsStatus.Detained:
+                                            <span class="badge badge-pill customs-status-detained">暫扣</span>
+                                            break;
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- 報關相關資訊 -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="text-dark mb-3"><i class="fas fa-file-alt"></i> 報關相關資訊</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ImportDate)</dt>
+                                <dd class="col-sm-4">
+                                    @if (Model.ImportDate.HasValue)
+                                    {
+                                        @Html.DisplayFor(model => model.ImportDate)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">未設定</span>
+                                    }
+                                </dd>
+                                
+                                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CustomsDeclarationDate)</dt>
+                                <dd class="col-sm-4">
+                                    @if (Model.CustomsDeclarationDate.HasValue)
+                                    {
+                                        @Html.DisplayFor(model => model.CustomsDeclarationDate)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">未設定</span>
+                                    }
+                                </dd>
+                                
+                                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ClearanceDate)</dt>
+                                <dd class="col-sm-4">
+                                    @if (Model.ClearanceDate.HasValue)
+                                    {
+                                        @Html.DisplayFor(model => model.ClearanceDate)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">未設定</span>
+                                    }
+                                </dd>
+                                
+                                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CustomsDeclarationNumber)</dt>
+                                <dd class="col-sm-4">
+                                    @if (!string.IsNullOrEmpty(Model.CustomsDeclarationNumber))
+                                    {
+                                        <strong>@Html.DisplayFor(model => model.CustomsDeclarationNumber)</strong>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">未設定</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- 系統資訊 -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="text-secondary mb-3"><i class="fas fa-cog"></i> 系統資訊</h5>
+                            
+                            <dl class="row">
+                                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CreatedDate)</dt>
+                                <dd class="col-sm-4">@Html.DisplayFor(model => model.CreatedDate)</dd>
+                                
+                                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CreatedBy)</dt>
+                                <dd class="col-sm-4">@Html.DisplayFor(model => model.CreatedBy)</dd>
+                                
+                                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.UpdatedDate)</dt>
+                                <dd class="col-sm-4">
+                                    @if (Model.UpdatedDate.HasValue)
+                                    {
+                                        @Html.DisplayFor(model => model.UpdatedDate)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">未更新</span>
+                                    }
+                                </dd>
+                                
+                                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.IsActive)</dt>
+                                <dd class="col-sm-4">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">啟用</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">停用</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Remarks))
+                    {
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="text-secondary mb-3"><i class="fas fa-comment"></i> 備註</h5>
+                                <div class="border p-3 bg-light rounded">
+                                    @Html.DisplayFor(model => model.Remarks)
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="text-center mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-lg">
+                            <i class="fas fa-edit"></i> 編輯
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-lg ml-2">
+                            <i class="fas fa-trash"></i> 刪除
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg ml-2">
+                            <i class="fas fa-arrow-left"></i> 返回列表
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

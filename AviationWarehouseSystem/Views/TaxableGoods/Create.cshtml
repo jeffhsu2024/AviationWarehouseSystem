@@ -1,0 +1,197 @@
+@model Models.TaxableGoods
+
+@{
+    ViewData["Title"] = "新增報稅貨物";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-plus"></i> 新增報稅貨物
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        <div class="row">
+                            <!-- 基本資訊 -->
+                            <div class="col-md-6">
+                                <h5 class="text-primary mb-3"><i class="fas fa-info-circle"></i> 基本資訊</h5>
+                                
+                                <div class="form-group">
+                                    <label asp-for="GoodsName" class="control-label"></label>
+                                    <input asp-for="GoodsName" class="form-control" />
+                                    <span asp-validation-for="GoodsName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="EnglishName" class="control-label"></label>
+                                    <input asp-for="EnglishName" class="form-control" />
+                                    <span asp-validation-for="EnglishName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="GoodsCode" class="control-label"></label>
+                                    <input asp-for="GoodsCode" class="form-control" />
+                                    <span asp-validation-for="GoodsCode" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="TariffCode" class="control-label"></label>
+                                    <input asp-for="TariffCode" class="form-control" />
+                                    <span asp-validation-for="TariffCode" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label"></label>
+                                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- 價格與稅務資訊 -->
+                            <div class="col-md-6">
+                                <h5 class="text-success mb-3"><i class="fas fa-dollar-sign"></i> 價格與稅務資訊</h5>
+                                
+                                <div class="form-group">
+                                    <label asp-for="DutiableValue" class="control-label"></label>
+                                    <input asp-for="DutiableValue" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="DutiableValue" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="TaxRate" class="control-label"></label>
+                                    <input asp-for="TaxRate" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="TaxRate" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="TaxAmount" class="control-label"></label>
+                                    <input asp-for="TaxAmount" class="form-control" type="number" step="0.01" readonly />
+                                    <span asp-validation-for="TaxAmount" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="TaxCategoryId" class="control-label"></label>
+                                    <select asp-for="TaxCategoryId" class="form-control" asp-items="ViewBag.TaxCategoryId">
+                                        <option value="">請選擇稅務分類</option>
+                                    </select>
+                                    <span asp-validation-for="TaxCategoryId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- 數量與規格 -->
+                            <div class="col-md-6">
+                                <h5 class="text-info mb-3"><i class="fas fa-cubes"></i> 數量與規格</h5>
+                                
+                                <div class="form-group">
+                                    <label asp-for="Quantity" class="control-label"></label>
+                                    <input asp-for="Quantity" class="form-control" type="number" />
+                                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Unit" class="control-label"></label>
+                                    <input asp-for="Unit" class="form-control" />
+                                    <span asp-validation-for="Unit" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Weight" class="control-label"></label>
+                                    <input asp-for="Weight" class="form-control" type="number" step="0.0001" />
+                                    <span asp-validation-for="Weight" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="OriginCountry" class="control-label"></label>
+                                    <input asp-for="OriginCountry" class="form-control" />
+                                    <span asp-validation-for="OriginCountry" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- 供應商與儲位 -->
+                            <div class="col-md-6">
+                                <h5 class="text-warning mb-3"><i class="fas fa-warehouse"></i> 供應商與儲位</h5>
+                                
+                                <div class="form-group">
+                                    <label asp-for="SupplierId" class="control-label"></label>
+                                    <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId">
+                                        <option value="">請選擇供應商</option>
+                                    </select>
+                                    <span asp-validation-for="SupplierId" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="StorageLocationId" class="control-label"></label>
+                                    <select asp-for="StorageLocationId" class="form-control" asp-items="ViewBag.StorageLocationId">
+                                        <option value="">請選擇儲位</option>
+                                    </select>
+                                    <span asp-validation-for="StorageLocationId" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="CustomsStatus" class="control-label"></label>
+                                    <select asp-for="CustomsStatus" class="form-control" asp-items="ViewBag.CustomsStatus">
+                                        <option value="">請選擇報關狀態</option>
+                                    </select>
+                                    <span asp-validation-for="CustomsStatus" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="CustomsDeclarationNumber" class="control-label"></label>
+                                    <input asp-for="CustomsDeclarationNumber" class="form-control" />
+                                    <span asp-validation-for="CustomsDeclarationNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="CreatedBy" class="control-label"></label>
+                                    <input asp-for="CreatedBy" class="form-control" />
+                                    <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="Remarks" class="control-label"></label>
+                                    <textarea asp-for="Remarks" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save"></i> 儲存
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg ml-2">
+                                <i class="fas fa-arrow-left"></i> 返回列表
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // 自動計算應納稅額
+        $('#DutiableValue, #TaxRate').on('input', function() {
+            var dutiableValue = parseFloat($('#DutiableValue').val()) || 0;
+            var taxRate = parseFloat($('#TaxRate').val()) || 0;
+            var taxAmount = dutiableValue * (taxRate / 100);
+            $('#TaxAmount').val(taxAmount.toFixed(2));
+        });
+    </script>
+}

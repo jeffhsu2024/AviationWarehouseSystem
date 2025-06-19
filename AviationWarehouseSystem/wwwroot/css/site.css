@@ -20,3 +20,34 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* 報關狀態樣式 */
+.customs-status-pending {
+    background-color: #ff9800 !important;
+    color: white !important;
+}
+
+.customs-status-declared {
+    background-color: #2196f3 !important;
+    color: white !important;
+}
+
+.customs-status-inprocess {
+    background-color: #9c27b0 !important;
+    color: white !important;
+}
+
+.customs-status-cleared {
+    background-color: #4caf50 !important;
+    color: white !important;
+}
+
+.customs-status-rejected {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.customs-status-detained {
+    background-color: #607d8b !important;
+    color: white !important;
+}

@@ -38,3 +38,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}");
 
 app.Run();
+
+// 讓測試可以存取Program類別
+public partial class Program { }

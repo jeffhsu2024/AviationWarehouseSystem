@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -70,15 +71,13 @@ namespace Models
         public string OriginCountry { get; set; }
 
         [Required(ErrorMessage = "稅務分類為必填")]
-        [Display(Name = "稅務分類")]
-        public int TaxCategoryId { get; set; }
+        public int? TaxCategoryId { get; set; }
 
         [Display(Name = "供應商")]
         public int? SupplierId { get; set; }
 
         [Required(ErrorMessage = "儲位為必填")]
-        [Display(Name = "儲位")]
-        public int StorageLocationId { get; set; }
+        public int? StorageLocationId { get; set; }
 
         [Display(Name = "報關狀態")]
         public CustomsStatus CustomsStatus { get; set; } = CustomsStatus.Pending;
@@ -114,9 +113,13 @@ namespace Models
         public string Remarks { get; set; }
 
         // 導航屬性
+        [ValidateNever]
         public virtual TaxCategory TaxCategory { get; set; }
+        [ValidateNever]
         public virtual Supplier Supplier { get; set; }
+        [ValidateNever]
         public virtual StorageLocation StorageLocation { get; set; }
+        [ValidateNever]
         public virtual ICollection<CustomsDeclaration> CustomsDeclarations { get; set; } = new List<CustomsDeclaration>();
     }
     public enum CustomsStatus
