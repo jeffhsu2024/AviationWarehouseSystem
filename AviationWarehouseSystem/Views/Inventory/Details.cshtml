@@ -1,0 +1,56 @@
+@model Models.DutyFreeProduct
+@{
+    ViewData["Title"] = "庫存詳細資訊";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>@Model.ProductName (@Model.ProductCode)</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">商品分類</dt>
+                    <dd class="col-sm-8">@Model.Category?.CategoryName</dd>
+                    
+                    <dt class="col-sm-4">品牌</dt>
+                    <dd class="col-sm-8">@Model.Brand</dd>
+                    
+                    <dt class="col-sm-4">供應商</dt>
+                    <dd class="col-sm-8">@Model.Supplier?.SupplierName</dd>
+                    
+                    <dt class="col-sm-4">單價</dt>
+                    <dd class="col-sm-8">@Model.UnitPrice.ToString("N2")</dd>
+                    
+                    <dt class="col-sm-4">成本</dt>
+                    <dd class="col-sm-8">@Model.CostPrice.ToString("N2")</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">庫存數量</dt>
+                    <dd class="col-sm-8">@Model.StockQuantity</dd>
+                    
+                    <dt class="col-sm-4">安全庫存</dt>
+                    <dd class="col-sm-8">@Model.SafetyStock</dd>
+                    
+                    <dt class="col-sm-4">最大庫存</dt>
+                    <dd class="col-sm-8">@Model.MaxStock</dd>
+                    
+                    <dt class="col-sm-4">單位</dt>
+                    <dd class="col-sm-8">@Model.Unit</dd>
+                    
+                    <dt class="col-sm-4">儲位</dt>
+                    <dd class="col-sm-8">@(Model.StorageLocationId != null ? Model.StorageLocation?.LocationName : "-")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">返回列表</a>
+</div>

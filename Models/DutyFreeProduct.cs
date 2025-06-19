@@ -98,6 +98,9 @@ namespace Models
         [Display(Name = "備註")]
         public string Remarks { get; set; }
 
+        [Display(Name = "儲位")]
+        public int? StorageLocationId { get; set; }
+
         // 導航屬性
         [ValidateNever]
         public virtual ProductCategory Category { get; set; }
@@ -108,6 +111,8 @@ namespace Models
         [ValidateNever]
         public virtual ICollection<InventoryTransaction> InventoryTransactions { get; set; }
 
+        [ValidateNever]
+        public virtual StorageLocation StorageLocation { get; set; }
 
     }
 

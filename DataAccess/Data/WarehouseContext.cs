@@ -51,6 +51,12 @@ namespace DataAccess.Data
                 .HasIndex(d => d.DeclarationNumber)
                 .IsUnique();
 
+
+            modelBuilder.Entity<DutyFreeProduct>()
+                .HasOne(p => p.StorageLocation)
+                .WithMany()
+                .HasForeignKey(p => p.StorageLocationId);
+
             // 種子資料
             modelBuilder.Entity<ProductCategory>().HasData(
                 new ProductCategory
@@ -143,6 +149,7 @@ namespace DataAccess.Data
                     Remarks = ""
                 }
             );
+
         }
     }
 }
