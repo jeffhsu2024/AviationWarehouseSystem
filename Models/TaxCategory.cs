@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -76,8 +77,11 @@ namespace Models
         public string Remarks { get; set; }
 
         // 導航屬性
+        [ValidateNever]
         public virtual TaxCategory ParentCategory { get; set; }
+        [ValidateNever]
         public virtual ICollection<TaxCategory> SubCategories { get; set; } = new List<TaxCategory>();
+        [ValidateNever]
         public virtual ICollection<TaxableGoods> TaxableGoods { get; set; } = new List<TaxableGoods>();
     }
 

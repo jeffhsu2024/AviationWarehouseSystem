@@ -1,0 +1,200 @@
+@model Models.TaxCategory
+
+@{
+    ViewData["Title"] = "新增稅則分類";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-plus me-2"></i>新增稅則分類
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        <div class="row">
+                            <!-- 基本資訊 -->
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">基本資訊</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label asp-for="CategoryCode" class="form-label"></label>
+                                            <input asp-for="CategoryCode" class="form-control" id="categoryCode" />
+                                            <span asp-validation-for="CategoryCode" class="text-danger"></span>
+                                            <div class="form-text">分類代碼必須唯一</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="CategoryName" class="form-label"></label>
+                                            <input asp-for="CategoryName" class="form-control" />
+                                            <span asp-validation-for="CategoryName" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="EnglishName" class="form-label"></label>
+                                            <input asp-for="EnglishName" class="form-control" />
+                                            <span asp-validation-for="EnglishName" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Description" class="form-label"></label>
+                                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                                            <span asp-validation-for="Description" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="ParentCategoryId" class="form-label"></label>
+                                            <select asp-for="ParentCategoryId" class="form-select" asp-items="ViewBag.ParentCategoryId">
+                                                <option value="">-- 選擇上層分類 (可選) --</option>
+                                            </select>
+                                            <span asp-validation-for="ParentCategoryId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 稅務資訊 -->
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">稅務資訊</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label asp-for="TariffCode" class="form-label"></label>
+                                            <input asp-for="TariffCode" class="form-control" />
+                                            <span asp-validation-for="TariffCode" class="text-danger"></span>
+                                            <div class="form-text">海關稅則號列</div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label asp-for="TaxRate" class="form-label"></label>
+                                                    <div class="input-group">
+                                                        <input asp-for="TaxRate" class="form-control" type="number" step="0.01" min="0" max="100" />
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                    <span asp-validation-for="TaxRate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label asp-for="BusinessTaxRate" class="form-label"></label>
+                                                    <div class="input-group">
+                                                        <input asp-for="BusinessTaxRate" class="form-control" type="number" step="0.01" min="0" max="100" />
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                    <span asp-validation-for="BusinessTaxRate" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 管制資訊 -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">管制資訊</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input asp-for="IsControlledItem" class="form-check-input" />
+                                                <label asp-for="IsControlledItem" class="form-check-label"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input asp-for="RequiresPermit" class="form-check-input" />
+                                                <label asp-for="RequiresPermit" class="form-check-label"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="ControlDescription" class="form-label"></label>
+                                            <textarea asp-for="ControlDescription" class="form-control" rows="3"></textarea>
+                                            <span asp-validation-for="ControlDescription" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 其他設定 -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">其他設定</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label asp-for="SortOrder" class="form-label"></label>
+                                            <input asp-for="SortOrder" class="form-control" type="number" min="0" />
+                                            <span asp-validation-for="SortOrder" class="text-danger"></span>
+                                            <div class="form-text">數字越小排序越前面</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input asp-for="IsActive" class="form-check-input" checked />
+                                                <label asp-for="IsActive" class="form-check-label"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Remarks" class="form-label"></label>
+                                            <textarea asp-for="Remarks" class="form-control" rows="2"></textarea>
+                                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save"></i> 儲存
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg ml-2">
+                                <i class="fas fa-arrow-left"></i> 返回列表
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // 檢查分類代碼是否重複
+            $('#categoryCode').on('blur', function() {
+                var code = $(this).val();
+                if (code) {
+                    $.get('@Url.Action("CheckCategoryCode")', { categoryCode: code }, function(data) {
+                        if (!data) {
+                            $('#categoryCode').addClass('is-invalid');
+                            if ($('#categoryCode').next('.invalid-feedback').length === 0) {
+                                $('#categoryCode').after('<div class="invalid-feedback">此分類代碼已存在</div>');
+                            }
+                        } else {
+                            $('#categoryCode').removeClass('is-invalid');
+                            $('#categoryCode').next('.invalid-feedback').remove();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

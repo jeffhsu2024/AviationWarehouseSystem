@@ -1,0 +1,208 @@
+@model Models.TaxCategory
+
+@{
+    ViewData["Title"] = "刪除稅則分類";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>刪除稅則分類
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">
+                            <i class="fas fa-warning me-2"></i>警告！
+                        </h4>
+                        <p>您即將刪除以下稅則分類，此操作將會：</p>
+                        <ul>
+                            <li>將此分類設定為停用狀態（軟刪除）</li>
+                            <li>如果有子分類，將無法執行刪除</li>
+                            <li>相關的報稅貨物將失去分類關聯</li>
+                        </ul>
+                        <hr>
+                        <p class="mb-0">請確認您真的要執行此操作。</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">分類資訊</h5>
+                                </div>
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-4">分類代碼：</dt>
+                                        <dd class="col-sm-8">
+                                            <code class="fs-6">@Model.CategoryCode</code>
+                                        </dd>
+
+                                        <dt class="col-sm-4">分類名稱：</dt>
+                                        <dd class="col-sm-8">
+                                            <strong>@Model.CategoryName</strong>
+                                        </dd>
+
+                                        <dt class="col-sm-4">英文名稱：</dt>
+                                        <dd class="col-sm-8">
+                                            @if (!string.IsNullOrEmpty(Model.EnglishName))
+                                            {
+                                                @Model.EnglishName
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">未設定</span>
+                                            }
+                                        </dd>
+
+                                        <dt class="col-sm-4">分類描述：</dt>
+                                        <dd class="col-sm-8">
+                                            @if (!string.IsNullOrEmpty(Model.Description))
+                                            {
+                                                @Model.Description
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">無描述</span>
+                                            }
+                                        </dd>
+
+                                        <dt class="col-sm-4">上層分類：</dt>
+                                        <dd class="col-sm-8">
+                                            @if (Model.ParentCategory != null)
+                                            {
+                                                <span class="badge bg-light text-dark">
+                                                    @Model.ParentCategory.CategoryName
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">無上層分類</span>
+                                            }
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">稅務資訊</h5>
+                                </div>
+                                <div class="card-body">
+                                    <dl class="row">
+                                        <dt class="col-sm-4">稅則號列：</dt>
+                                        <dd class="col-sm-8">
+                                            @if (!string.IsNullOrEmpty(Model.TariffCode))
+                                            {
+                                                <code class="fs-6">@Model.TariffCode</code>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">未設定</span>
+                                            }
+                                        </dd>
+
+                                        <dt class="col-sm-4">稅率：</dt>
+                                        <dd class="col-sm-8">
+                                            <span class="badge bg-info fs-6">@Model.TaxRate%</span>
+                                        </dd>
+
+                                        <dt class="col-sm-4">營業稅率：</dt>
+                                        <dd class="col-sm-8">
+                                            <span class="badge bg-secondary fs-6">@Model.BusinessTaxRate%</span>
+                                        </dd>
+
+                                        <dt class="col-sm-4">管制品：</dt>
+                                        <dd class="col-sm-8">
+                                            @if (Model.IsControlledItem)
+                                            {
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="fas fa-exclamation-triangle me-1"></i>是
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">否</span>
+                                            }
+                                        </dd>
+
+                                        <dt class="col-sm-4">需許可證：</dt>
+                                        <dd class="col-sm-8">
+                                            @if (Model.RequiresPermit)
+                                            {
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="fas fa-certificate me-1"></i>是
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">否</span>
+                                            }
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 子分類警告 -->
+                    @if (Model.SubCategories != null && Model.SubCategories.Any())
+                    {
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="alert alert-warning" role="alert">
+                                    <h5 class="alert-heading">
+                                        <i class="fas fa-sitemap me-2"></i>注意：此分類包含子分類
+                                    </h5>
+                                    <p>此分類包含 <strong>@Model.SubCategories.Count</strong> 個子分類：</p>
+                                    <ul class="mb-0">
+                                        @foreach (var subCategory in Model.SubCategories.Take(5))
+                                        {
+                                            <li>@subCategory.CategoryName (@subCategory.CategoryCode)</li>
+                                        }
+                                        @if (Model.SubCategories.Count > 5)
+                                        {
+                                            <li>... 還有 @(Model.SubCategories.Count - 5) 個子分類</li>
+                                        }
+                                    </ul>
+                                    <hr>
+                                    <p class="mb-0">
+                                        <strong>無法刪除包含子分類的分類。</strong>
+                                        請先刪除所有子分類，或將子分類移動到其他上層分類。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="text-center mt-4">
+                        @if (Model.SubCategories == null || !Model.SubCategories.Any())
+                        {
+                            <form asp-action="Delete" method="post" class="d-inline">
+                                <input type="hidden" asp-for="Id" />
+                                <button type="submit" class="btn btn-danger btn-lg"
+                                        onclick="return confirm('您確定要刪除此稅則分類嗎？此操作無法復原。')">
+                                    <i class="fas fa-trash"></i> 確認刪除
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-danger btn-lg" disabled>
+                                <i class="fas fa-ban"></i> 無法刪除
+                            </button>
+                        }
+                        <a asp-action="Index" class="btn btn-secondary btn-lg ml-2">
+                            <i class="fas fa-arrow-left"></i> 取消
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
