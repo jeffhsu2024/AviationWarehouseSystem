@@ -19,23 +19,23 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li> *@
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="DutyFree" asp-controller="DutyFreeProducts" asp-action="Index">免稅品管理</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="DutyFreeProducts" asp-action="Index">免稅品管理</a>
+                            <a class="nav-link text-dark" asp-area="DutyFree" asp-controller="ProductCategory" asp-action="Index">商品分類管理</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ProductCategory" asp-action="Index">商品分類管理</a>
+                            <a class="nav-link text-dark" asp-area="DutyFree" asp-controller="Inventory" asp-action="Index">庫存查詢</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Inventory" asp-action="Index">庫存查詢</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="TaxableGoods" asp-action="Index">報稅貨物管理</a>
+                            <a class="nav-link text-dark" asp-area="TaxDeclaration" asp-controller="TaxableGoods" asp-action="Index">報稅貨物管理</a>
                         </li>
                     </ul>
                 </div>

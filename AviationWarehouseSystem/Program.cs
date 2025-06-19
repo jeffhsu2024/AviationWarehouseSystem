@@ -35,7 +35,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}");
+    pattern: "{Area=DutyFree}/{controller=DutyFreeProducts}/{action=Index}");
 
 app.Run();
 

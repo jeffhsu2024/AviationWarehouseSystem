@@ -7,8 +7,9 @@ using Models;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
-namespace AviationWarehouseSystem.Controllers
+namespace AviationWarehouseSystem.Areas.DutyFree.Controllers
 {
+    [Area("DutyFree")]
     public class DutyFreeProductsController : Controller
     {
         //private readonly IDutyFreeProductService _productService;

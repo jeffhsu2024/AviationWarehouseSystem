@@ -2,8 +2,9 @@ using DataAccess.IService;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
-namespace AviationWarehouseSystem.Controllers
+namespace AviationWarehouseSystem.Areas.DutyFree.Controllers
 {
+    [Area("DutyFree")]
     public class InventoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

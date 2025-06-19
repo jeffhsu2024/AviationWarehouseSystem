@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
 using AviationWarehouseSystem.Extensions;
 
-namespace AviationWarehouseSystem.Controllers
+namespace AviationWarehouseSystem.Areas.TaxDeclaration.Controllers
 {
+    [Area("TaxDeclaration")]
     public class TaxableGoodsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
