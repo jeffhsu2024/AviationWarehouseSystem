@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using AviationWarehouseSystem.Services;
 
 namespace AviationWarehouseSystem.Areas.DutyFree.Controllers
 {
@@ -20,9 +21,12 @@ namespace AviationWarehouseSystem.Areas.DutyFree.Controllers
         //    _context = context;
         //}
         private readonly IUnitOfWork _unitOfWork;
-        public DutyFreeProductsController(IUnitOfWork unitOfWork)
+        private readonly DutyFreeProductReportService _reportService;
+
+        public DutyFreeProductsController(IUnitOfWork unitOfWork, DutyFreeProductReportService reportService)
         {
             _unitOfWork = unitOfWork;
+            _reportService = reportService;
         }
         public async Task<IActionResult> Index(string searchString)
         {
@@ -116,6 +120,24 @@ namespace AviationWarehouseSystem.Areas.DutyFree.Controllers
 
             return View(product);
         }
+
+        // GET: DutyFreeProducts/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var product = await _unitOfWork.DutyFreeProduct.GetByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
         public async Task<IActionResult> Delete(int id)
         {
             if (id == 0)
@@ -141,6 +163,40 @@ namespace AviationWarehouseSystem.Areas.DutyFree.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // 導出免稅商品清單報表
+        public async Task<IActionResult> ExportPdf(string searchString)
+        {
+            IEnumerable<DutyFreeProduct> products;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = await _unitOfWork.DutyFreeProduct.SearchAsync(searchString);
+            }
+            else
+            {
+                products = await _unitOfWork.DutyFreeProduct.GetAllAsync();
+            }
+
+            var pdfBytes = _reportService.GenerateDutyFreeProductListReport(products, searchString);
+
+            var fileName = $"免稅商品清單_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            return File(pdfBytes, "application/pdf", fileName);
+        }
+
+        // 導出單一商品詳細報表
+        public async Task<IActionResult> ExportDetailPdf(int id)
+        {
+            var product = await _unitOfWork.DutyFreeProduct.GetByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var pdfBytes = _reportService.GenerateDutyFreeProductDetailReport(product);
+
+            var fileName = $"免稅商品詳細資料_{product.ProductCode}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+            return File(pdfBytes, "application/pdf", fileName);
+        }
 
     }
 }

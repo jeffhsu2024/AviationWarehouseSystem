@@ -1,0 +1,147 @@
+@model Models.DutyFreeProduct
+@{
+    ViewData["Title"] = "商品詳細資料";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">基本資訊</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ProductCode)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.ProductCode)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ProductName)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.ProductName)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Brand)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Brand)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Barcode)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Barcode)</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Category)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Category.CategoryName)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Supplier)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Supplier.SupplierName)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Unit)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Unit)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.IsActive)</dt>
+                            <dd class="col-sm-8">@(Model.IsActive ? "啟用" : "停用")</dd>
+                        </dl>
+                    </div>
+                </div>
+                
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <dt>@Html.DisplayNameFor(model => model.Description)</dt>
+                            <dd>@Html.DisplayFor(model => model.Description)</dd>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">價格與庫存</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-6">@Html.DisplayNameFor(model => model.UnitPrice)</dt>
+                    <dd class="col-sm-6">@Model.UnitPrice.ToString("C")</dd>
+                    
+                    <dt class="col-sm-6">@Html.DisplayNameFor(model => model.CostPrice)</dt>
+                    <dd class="col-sm-6">@Model.CostPrice.ToString("C")</dd>
+                    
+                    <dt class="col-sm-6">@Html.DisplayNameFor(model => model.StockQuantity)</dt>
+                    <dd class="col-sm-6">@Html.DisplayFor(model => model.StockQuantity)</dd>
+                    
+                    <dt class="col-sm-6">@Html.DisplayNameFor(model => model.SafetyStock)</dt>
+                    <dd class="col-sm-6">@Html.DisplayFor(model => model.SafetyStock)</dd>
+                    
+                    <dt class="col-sm-6">@Html.DisplayNameFor(model => model.MaxStock)</dt>
+                    <dd class="col-sm-6">@Html.DisplayFor(model => model.MaxStock)</dd>
+                </dl>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="card-title">免稅資訊</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-6">@Html.DisplayNameFor(model => model.DutyFreeType)</dt>
+                    <dd class="col-sm-6">@Html.DisplayFor(model => model.DutyFreeType)</dd>
+                    
+                    <dt class="col-sm-6">@Html.DisplayNameFor(model => model.DutyFreeDiscountRate)</dt>
+                    <dd class="col-sm-6">@Model.DutyFreeDiscountRate%</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Remarks))
+{
+    <div class="card mt-3">
+        <div class="card-header">
+            <h5 class="card-title">備註</h5>
+        </div>
+        <div class="card-body">
+            <p>@Html.DisplayFor(model => model.Remarks)</p>
+        </div>
+    </div>
+}
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h5 class="card-title">系統資訊</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CreatedDate)</dt>
+                    <dd class="col-sm-8">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                    
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CreatedBy)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CreatedBy)</dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UpdatedDate)</dt>
+                    <dd class="col-sm-8">@(Model.UpdatedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "無")</dd>
+                    
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UpdatedBy)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.UpdatedBy)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">編輯</a>
+    <a asp-action="ExportDetailPdf" asp-route-id="@Model.Id" class="btn btn-secondary">PDF</a>
+    <a asp-action="Index" class="btn btn-primary">返回清單</a>
+</div>

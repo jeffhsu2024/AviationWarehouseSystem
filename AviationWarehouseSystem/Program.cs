@@ -3,6 +3,11 @@ using DataAccess.Data;
 using DataAccess.IService;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using AviationWarehouseSystem.Services;
+using QuestPDF.Infrastructure;
+
+// 設定 QuestPDF 授權
+QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +17,7 @@ builder.Services.AddControllersWithViews();
 //builder.Services.AddScoped<IDutyFreeProductService, DutyFreeProductService>();
 //builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<DutyFreeProductReportService>();
 
 builder.Services.AddDbContext<WarehouseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
