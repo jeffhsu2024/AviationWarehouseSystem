@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{F7F0EE37-72D9-4352-B2DA-5B260E788FBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AviationWarehouseSystem.Tests", "AviationWarehouseSystem.Tests\AviationWarehouseSystem.Tests.csproj", "{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{F7F0EE37-72D9-4352-B2DA-5B260E788FBE}.Release|x64.Build.0 = Release|Any CPU
 		{F7F0EE37-72D9-4352-B2DA-5B260E788FBE}.Release|x86.ActiveCfg = Release|Any CPU
 		{F7F0EE37-72D9-4352-B2DA-5B260E788FBE}.Release|x86.Build.0 = Release|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Debug|x64.Build.0 = Debug|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Debug|x86.Build.0 = Debug|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Release|x64.ActiveCfg = Release|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Release|x64.Build.0 = Release|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Release|x86.ActiveCfg = Release|Any CPU
+		{16B6D3C8-6759-E52A-F8BB-179AF0CF0C18}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
